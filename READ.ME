@@ -1,0 +1,25 @@
+# JavaFX Calculator
+
+A simple desktop calculator built with Java 17 and JavaFX.
+The GUI (FXML, designed in Scene Builder) is separated from the calculation logic, which is covered by JUnit tests.
+
+## Features
+- Addition, subtraction, multiplication, division
+- Chained calculations
+- Division by zero handling
+- Delete and Clear buttons
+
+## Project structure
+- `calculator.logic` - calculation logic (no GUI code)
+- `calculator.gui` - JavaFX controller
+- `src/main/resources/calculator/gui` - FXML layout and CSS
+
+## Requirements
+- JDK 17
+- Maven
+
+## Run
+mvn javafx:run
+
+## Test
+mvn test
