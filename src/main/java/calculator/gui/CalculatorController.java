@@ -11,11 +11,17 @@ public class CalculatorController {
 
     private Calculator calculator = new Calculator();
 
+    private boolean showingError = false;
+
     @FXML
     private TextField display;
 
     @FXML
     private void onDigitPressed(ActionEvent event) {
+        if(showingError) {
+            display.clear();
+            showingError = false;
+        }
     Button button = (Button) event.getSource();
     display.appendText(button.getText());
 
@@ -25,16 +31,20 @@ public class CalculatorController {
     private void onClearPressed(ActionEvent event) {
         calculator.clear();
         display.clear();
+        showingError = false;
     }
 
     @FXML
     private void onOperatorPressed(ActionEvent event) {
+        if(showingError){
+            return;
+        }
         String text = display.getText();
-        if(text.isEmpty()) {
+        if(text.isEmpty() || text.contains(" ")) {
             return;
         }
     Button button = (Button) event.getSource();
-    double num1 = Double.parseDouble(display.getText());
+    double num1 = Double.parseDouble(text);
     calculator.setNum1(num1);
     calculator.setOperator(button.getText().charAt(0));
     display.appendText(" " + button.getText() + " ");
@@ -42,7 +52,14 @@ public class CalculatorController {
 
     @FXML
     private void onEqualsPressed(ActionEvent event) {
-        String[] parts = display.getText().split(" ");
+        if(showingError) {
+            return;
+        }
+        String text = display.getText();
+        String[] parts = text.split(" ");
+        if(parts.length <3) {
+            return;
+        }
         double num2 = Double.parseDouble(parts[parts.length - 1]);
         calculator.setNum2(num2);
         try{
@@ -50,6 +67,7 @@ public class CalculatorController {
             display.setText(String.valueOf(result));
         } catch(ArithmeticException e) {
             display.setText("Division by 0!");
+            showingError = true;
         }
     }
 
